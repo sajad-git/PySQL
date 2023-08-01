@@ -34,5 +34,5 @@ df = pd.read_csv('test.csv')
 TA = Table_analyzer()
 my_dict = TA.analyze(df,texts_buffer=0.2)
 ```
-for texts_buffer > 1 : output N for nvarchar(N) sets to len_max_length + texts_buffer
-for 0 < texts_buffer < 1 : output N for nvarchar(N) sets to len_max_length + texts_buffer*len_max_length (extra percentage)
++ for texts_buffer > 1 : output N for nvarchar(N) sets to len_max_length + texts_buffer
++ for 0 < texts_buffer < 1 : output N for nvarchar(N) sets to len_max_length + texts_buffer*len_max_length (extra percentage)
