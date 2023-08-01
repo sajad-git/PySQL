@@ -3,7 +3,6 @@
 <p align="center">
 PySQL is a Python library for interacting with SQL Server databases. It provides a simplified interface for common database operations.
 </p>
-![LOGO](https://github.com/sajad-git/PySQL/blob/crawler/readme/lugu.jpg?raw=true)
 
 <p align="center">
   <img src="https://github.com/sajad-git/PySQL/blob/crawler/readme/lugu.jpg?raw=true" alt="Sublime's custom image"/>
