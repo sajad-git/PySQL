@@ -77,10 +77,11 @@ pysql.read_sql_query(query='SELECT * FROM TABLE_NAME')
 ```python
 pysql.logger('create_connection', 'success', 'connected')
 ```
-log sample:
-<img src="https://github.com/sajad-git/PySQL/blob/crawler/readme/to_sql_sqmple.PNG?raw=true" alt="Sublime's custom image"/>
-
++ auto log system logs all your method calls  like bellow sample:
 <br>
 
-log sample:
+data to_sql sample:
+<img src="https://github.com/sajad-git/PySQL/blob/crawler/readme/to_sql_sqmple.PNG?raw=true" alt="Sublime's custom image"/>
+
+auto_log sample:
 <img src="https://github.com/sajad-git/PySQL/blob/crawler/readme/log_sample.PNG?raw=true" alt="Sublime's custom image"/>
