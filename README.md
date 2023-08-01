@@ -1,4 +1,4 @@
-                 #      PySQL
+# PySQL
 <p align="center">
 
 A Python tool for communicating interactions with SQL Server
