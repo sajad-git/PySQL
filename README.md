@@ -6,6 +6,5 @@ A Python tool for communicating interactions with SQL Server
 
 ![LOGO](https://github.com/sajad-git/PySQL/blob/crawler/readme/lugu.jpg?raw=true)
 
-```python
+
 import pandas as pd
-```
