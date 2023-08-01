@@ -8,7 +8,8 @@ PySQL is a Python library for interacting with SQL Server databases. It provides
   <img src="https://github.com/sajad-git/PySQL/blob/crawler/readme/lugu.jpg?raw=true" alt="Sublime's custom image"/>
 </p>
 <br>
-# Installation
+## Installation
+
 pySQL requires the following packages:
 
 - pandas
@@ -26,7 +27,10 @@ Import PySQL and :
 ```python
 from pySQL import PySQL, Table_analyzer
 ```
-# Table_analyzer usage:
+
+***
+***
+### Table_analyzer usage:
 A helper class for analyzing Pandas DataFrames to determine optimal SQL datatypes.
 
 ```python
@@ -37,7 +41,10 @@ dtype_dict = TA.analyze(df,texts_buffer=0.2)
 > + for texts_buffer > 1 :  N in nvarchar(N) sets to len_max_length + texts_buffer
 > + for 0 < texts_buffer < 1 :  N in nvarchar(N) sets to len_max_length + texts_buffer*len_max_length (extra percentage)
 
-# PySQL usage:
+***
+***
+
+### PySQL usage:
 
 + Create a connection
 ```python
@@ -80,6 +87,9 @@ pysql.read_sql_query(query='SELECT * FROM TABLE_NAME')
 ```python
 pysql.logger('create_connection', 'success', 'connected')
 ```
+
+***
+***
 + auto log system logs all your method calls  like bellow sample:
 
 > auto_log sample:
