@@ -44,6 +44,8 @@ dtype_dict = TA.analyze(df,texts_buffer=0.2)
 pysql = PySQL()
 pysql.create_connection(server='host_ip', database='mydb', username='myuser', password='mypassword')
 ```
+> your user must have 'db_datareader', 'db_datawriter', 'db_ddlAdmin' permissions to module works perfectly
+
 <br>
 
 + at first use (for every tables) you must call create_dtypes()
