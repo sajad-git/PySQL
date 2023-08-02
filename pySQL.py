@@ -186,8 +186,8 @@ class PySQL():
             server (str): your host server (ip)
             database (str): target database
             username (str): username 
-            log (str): log string
-            log (str): log string
+            password (str): password 
+            port (str): connection port default : 1433
             
         Returns:
             None
