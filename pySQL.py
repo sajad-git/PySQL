@@ -471,22 +471,3 @@ class PySQL():
             raise Exception(self.Error)
        
         
-
-
-
-
-
-df = pd.read_csv('test.csv')
-df = df[:5]
-TA = Table_analyzer()
-my_dict = TA.analyze(df,texts_buffer=0.2)
-p = PySQL()
-
-
-p.create_connection('37.32.29.99', 'sample4pysql', 'pysql_user', 'farhangbonyan1347')
-# p.create_dtypes(dtype_dict=my_dict, table_name='twitterTest')
-p.load_dtypes(table_name='twitterTest')
-p.to_sql(df,'twitterTest', if_exists='append', text_cutter=True, date_normalizer=True)
-# p.to_sql(df,'FukinTest', None)
-
-# FukinTest = p.read_sql_table('FukinTest')
