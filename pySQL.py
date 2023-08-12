@@ -137,14 +137,15 @@ class Table_analyzer():
 
 class PySQL():
     def __init__(self):
-        self.log_dtypes =  {'function':types.VARCHAR(50), 'state':types.VARCHAR(50), 'log':types.VARCHAR(2000), 'connection_user':types.VARCHAR(50), 'process_id':types.VARCHAR(15), 'datetime':types.DATETIME()}
-        self.process_id = uuid.uuid4().hex[:15]
+        self.log_dtypes =  {'function':types.VARCHAR(50), 'state':types.VARCHAR(50), 'log':types.VARCHAR(2000), 'connection_user':types.VARCHAR(50), 'process_id':types.INT(), 'datetime':types.DATETIME()}
+        self.dtypes_types = {'table':types.VARCHAR(50), 'schema':types.VARCHAR(50), 'dtypes_str':types.VARCHAR(4000), 'process_id':types.INT()}
+        self.process_id = -1
         self.dtypes = {}
         
     def _log_decorator(func):  
         def wrapper(self, *args, **kwargs):
             try:
-                self.process_id = uuid.uuid4().hex[:15]
+                self.process_id += 1
                 self.logger(func.__name__ , 'start', 'success')
                 func_result = func(self, *args, **kwargs)
                 self.logger(func.__name__ , 'end', 'success')
@@ -178,7 +179,7 @@ class PySQL():
         self.log_data = pd.DataFrame([log_data])
         self.log_data.to_sql('log', con=self.engine, schema='config', if_exists='append', dtype=self.log_dtypes, index=False)
         
-    def create_connection(self, server, database, username='', password='', port=1433):
+    def create_connection(self, server, database, username, password, port=1433):
         """
         creates a pysql.engine connection to your target database
         in order to have best experience to use, your sql_user(username) must to have datawriter, datareader and ddladmin 
@@ -200,7 +201,10 @@ class PySQL():
         self.connection_str = f"mssql+pyodbc://{self.username}:{self.password}@{self.server}:{self.port}/{self.database}?driver=ODBC+Driver+17+for+SQL+Server"
         self.engine = create_engine(self.connection_str)
         self.logger('create_connection', 'success', 'connected')
-    
+        self.lastlog = self.read_sql_table('log', schema='config', columns=['process_id'])
+        self.process_id = self.lastlog.process_id.values.tolist()
+        self.process_id = max([int(i) for i in self.process_id])
+
     @_log_decorator 
     def to_sql(self, df, table_name, schema=None, if_exists='append', index=True, index_label=None, primary_key=None, chunksize=1, date_normalizer=True, text_cutter=True):
         """
@@ -250,7 +254,7 @@ class PySQL():
             if schema not in self.engine.dialect.get_schema_names(self.engine):  # check for schema existance
                 self.engine.execute(sqlalchemy_schema.CreateSchema(schema))
         df['process_id'] = [self.process_id]*len(df)
-        self.dtypes = self.dtypes | {'process_id':types.VARCHAR(15)}
+        self.dtypes = self.dtypes | {'process_id':types.INT()}
         if date_normalizer:
             df = self.date_normalizer(df)
         if text_cutter:
@@ -445,7 +449,7 @@ class PySQL():
         print('primary key sets on {column_name} with out any error')
         
     @_log_decorator 
-    def create_dtypes(self, dtype_dict, table_name):
+    def create_dtypes(self, dtype_dict, table_name, schema=None):
         def dtype_to_string(dtype_dict):
             dtype_dict_stringed = {}
             for dtype in dtype_dict.keys():
@@ -455,17 +459,32 @@ class PySQL():
             return dtype_dict_stringed
         
         dtype_dict = dtype_to_string(dtype_dict)
-        dtype_df = pd.DataFrame([dtype_dict])
-        dtype_df_dtypes = {i:types.VARCHAR(50) for i in dtype_dict.keys()}
-        dtype_df.to_sql(table_name+'_dtypes', con=self.engine, schema='config', if_exists='replace', dtype=dtype_df_dtypes, index=False)
+        dtype_df = pd.DataFrame([{'table':table_name, 'schema':schema, 'dtypes_str':str(dtype_dict), 'proccess_id':self.process_id}])
+        dtype_df.to_sql('dtypes', con=self.engine, schema='config', if_exists='append', dtype=self.dtypes_types, index=True)
+
+
         
     @_log_decorator   
-    def load_dtypes(self, table_name):
+    def load_dtypes(self, table_name, schema=None):
         try:
-            self.dtypes = pd.read_sql_table(table_name=table_name+'_dtypes', con=self.connection_str, schema='config')
-            self.dtypes = self.dtypes.to_dict('records')[0]
-            self.dtypes = {i:self.dtypes[i].replace('BOOLEAN', 'Boolean') for i in self.dtypes.keys()}
-            self.dtypes = {i:eval(self.dtypes[i]) for i in self.dtypes} 
+            if schema == None:
+                select_query = f"""SELECT TOP (1) [table]
+                                        ,[schema]
+                                        ,[dtypes_str]
+                                    FROM [config].[dtypes]
+                                    where [table] = '{table_name}'
+                                ORDER BY [proccess_id] DESC"""
+            else:
+                select_query = f"""SELECT TOP (1) [table]
+                                        ,[schema]
+                                        ,[dtypes_str] 
+                                    FROM [config].[dtypes]
+                                    where [table] = '{table_name}' and [schema] = '{schema}'
+                                    ORDER BY [proccess_id] DESC"""
+            self.dtypes = pd.read_sql_query(select_query, con=self.engine)
+            self.dtypes = self.dtypes.to_dict('records')[0]['dtypes_str']
+            self.dtypes = eval(self.dtypes)
+            self.dtypes = {i:eval(self.dtypes[i].replace('BOOLEAN', 'Boolean')) for i in self.dtypes} 
         except:
             self.Error = "can't load dtypes table from database please try run PySQL.create_dtypes() first.  using Table_analyzer is suggested :) "
             raise Exception(self.Error)
