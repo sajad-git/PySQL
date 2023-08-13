@@ -93,10 +93,33 @@ pysql.logger('create_connection', 'success', 'connected')
 + auto log system logs all your method calls  like bellow sample:
 
 > auto_log sample:
-<img src="https://github.com/sajad-git/PySQL/blob/crawler/readme/log_sample.PNG?raw=true" alt="Sublime's custom image"/>
+
+| function          | state   | log       | connection_user | process_id | datetime                |
+|-------------------|---------|-----------|-----------------|------------|-------------------------|
+| create_connection | success | connected | pysql_user      | -1         | 2023-08-12 16:04:22.000 |
+| read_sql_table    | start   | success   | pysql_user      | 0          | 2023-08-12 16:04:22.000 |
+| read_sql_table    | end     | success   | pysql_user      | 0          | 2023-08-12 16:04:23.000 |
+| create_dtypes     | start   | success   | pysql_user      | 1          | 2023-08-12 16:04:23.000 |
+| create_dtypes     | end     | success   | pysql_user      | 1          | 2023-08-12 16:04:23.000 |
+| load_dtypes       | start   | success   | pysql_user      | 2          | 2023-08-12 16:04:24.000 |
+| load_dtypes       | end     | success   | pysql_user      | 2          | 2023-08-12 16:04:24.000 |
+| to_sql            | start   | success   | pysql_user      | 3          | 2023-08-12 16:04:24.000 |
+| to_sql            | end     | success   | pysql_user      | 3          | 2023-08-12 16:04:32.000 |
 
 > data to_sql sample:
-<img src="https://github.com/sajad-git/PySQL/blob/crawler/readme/to_sql_sqmple.PNG?raw=true" alt="Sublime's custom image"/>
 
+| **user_id**         | **id**              | **created_at**          | **lang** | **favorite_count** | **quote_count** | **reply_count** | **retweet_count** | **views_count** | **bookmark_count** |
+|---------------------|---------------------|-------------------------|----------|--------------------|-----------------|-----------------|-------------------|-----------------|--------------------|
+| *****17323920629770 | 1647162******634625 | 2023-04-15 08:57:34.000 | en       | 2                  | 0               | 0               | 0                 | 177             | 1                  |
+| *****0417           | 1647153******613570 | 2023-04-15 08:23:18.000 | en       | 1                  | 0               | 1               | 0                 | 12              | 0                  |
+| *****49585152565249 | 1682090******974593 | 2023-07-20 18:08:18.000 | en       | 642                | 83              | 65              | 213               | 1749178         | 8                  |
+| *****87375859568642 | 1647152******957248 | 2023-04-15 08:18:00.000 | ar       | 22                 | 8               | 0               | 0                 | 7               | 0                  |
+| *****0013028323329  | 1647127******033537 | 2023-04-15 06:40:00.000 | en       | 2                  | 0               | 1               | 0                 | 84              | 2                  |
 
+> dtypes table sample:
 
+| table | schema  | dtypes_str                                                                                            | proccess_id |
+|-------|---------|-------------------------------------------------------------------------------------------------------|-------------|
+| T1    | Twitter | {'user_id': 'types.BIGINT()', ... , 'bookmark_count': 'types.INTEGER()'}                              | 1           |
+| T2    | Twitter | {'user_profile_banner_url': 'types.NVARCHAR(88)',..., 'user_description_urls': 'types.NVARCHAR(443)'} | 8           |
+| T3    | Twitter | {'in_reply_to_status_id_str': 'types.BIGINT()',..., 'is_quote': 'types.BOOLEAN()'}                    | 11          |
