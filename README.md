@@ -1,7 +1,7 @@
 ## PySQL
 
 <p align="center">
-PySQL is a Python library for interacting with SQL Server databases. It provides a simplified interface for common database operations.
+PySQL is a Python library for interacting with SQL Server databases. It provides a simplified methodes for common database operations.
 </p>
 
 <p align="center">
