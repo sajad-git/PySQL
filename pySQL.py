@@ -4,8 +4,6 @@ from sqlalchemy import create_engine, types, MetaData, Table, select, delete, an
 from sqlalchemy.exc import NoSuchTableError, NoSuchColumnError
 from sqlalchemy import schema as sqlalchemy_schema
 import numpy as np
-import uuid
-from ast import literal_eval
 import warnings
 warnings.simplefilter(action='ignore', category=UserWarning)
 
