@@ -1,7 +1,7 @@
 ## PySQL
 
 <p align="center">
-PySQL is a Python library for interacting with SQL Server databases. It provides a simplified methodes for common database operations.
+PySQL is a Python library for interacting with SQL Server databases. It provides a simplified interface for common database operations.
 </p>
 
 <p align="center">
@@ -22,10 +22,10 @@ pip install pandas numpy sqlalchemy pyodbc
 ```
 
 # Usage
-Import PySQL and :
+Import PySQL and Table_analyzer:
 
 ```python
-from pySQL import PySQL, Table_analyzer
+from pySqlServer import PySQL, Table_analyzer
 ```
 
 ***
