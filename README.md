@@ -14,11 +14,11 @@ pySQL requires the following packages:
 
 - pandas
 - numpy
-- sqlalchemy
+- sqlalchemy==1.4.32
 - pyodbc
   
 ```python
-pip install pandas numpy sqlalchemy pyodbc
+pip install pandas numpy sqlalchemy==1.4.32 pyodbc
 ```
 
 # Usage
