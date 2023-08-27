@@ -10,6 +10,10 @@ PySQL is a Python library for interacting with SQL Server databases. It provides
 <br>
 ## Installation
 
+```python
+pip install pySqlServer
+```
+
 pySQL requires the following packages:
 
 - pandas
